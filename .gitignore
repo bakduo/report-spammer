@@ -1,0 +1,6 @@
+config/*
+db.*
+log/*
+media/*
+*.pem
+*.key

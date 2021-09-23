@@ -1,0 +1,25 @@
+[[source]]
+url = "https://pypi.python.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+Django = "*"
+gunicorn = "*"
+python-dateutil = "*"
+pika = "*"
+aio-pika = "*"
+asgiref = "*"
+celery = "*"
+django-celery-results = "*"
+asyncio = "*"
+django-background-tasks = "*"
+django-simple-task = "*"
+paramiko = "*"
+django-tinymce = "*"
+psycopg2-binary = "*"
+
+[dev-packages]
+
+[requires]
+python_version = "3.8"

@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+{% block content %}
+
+
+<div class="table-responsive-sm table-responsive-md table-responsive-lg table-responsive-xl table-hover table-fixed text-nowrap">
+
+
+  <table class="table table-dark table-borderless align-middle">
+
+    <thead>
+        <tr>
+        <th scope="col">#</th>
+        <th scope="col">Email</th>
+        <th scope="col">Domain</th>
+        <th scope="col">Detail</th>
+        </tr>
+    </thead>
+
+ 
+    <tbody>
+        {% for email in emails %}
+        <tr>
+        <th scope="row">{{forloop.counter}}</th>
+        <td>{{email.email}}</td>
+        <td>{{email.domain}}</td>
+        <td><a href="{% url 'email_detail' email.id%}" alt="Access email detail">Detail</a></td>
+        </tr>
+        {% endfor %}
+    </tbody>
+
+  </table>
+
+<div class="pagination">
+    <span class="step-links">
+        {% if emails.has_previous %}
+            <a href="?page=1">&laquo; first</a>
+            <a href="?page={{ emails.previous_page_number }}">previous</a>
+        {% endif %}
+
+        <span class="current">
+            Page {{ emails.number }} of {{ emails.paginator.num_pages }}.
+        </span>
+
+        {% if emails.has_next %}
+            <a href="?page={{ emails.next_page_number }}">next</a>
+            <a href="?page={{ emails.paginator.num_pages }}">last &raquo;</a>
+        {% endif %}
+    </span>
+</div>
+
+</div>
+
+
+
+{% endblock content %}

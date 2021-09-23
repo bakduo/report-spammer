@@ -1,0 +1,74 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+  
+<div class="jumbotron jumbotron-fluid">
+        <h3 class="display-4">Reportar spam</h3>
+</div>
+
+<div class="container-fluid">
+  <hr class="my-4">
+
+{{ form.non_field_errors }}
+
+        <form action="{% url 'email_check' %}" method="post" enctype="multipart/form-data">
+
+         {% csrf_token %}
+
+        
+         <div class="form-group" >
+           {{ form.email.errors }}
+            <label for="{{ form.email.id_for_label }}">Correo</label>
+            <input type="text" class="form-control" name="{{ form.email.name }}" id="{{ form.email.id_email }}" required placeholder="Example input">
+            
+        </div>
+        <div class="form-group">
+         {{ form.domain.errors }}
+            <label for="{{ form.domain.id_for_label }}">dominio</label>
+            
+            <input type="text" class="form-control" name="{{ form.domain.name }}" required id="{{ form.domain.id_domain }}" placeholder="Another input">
+        </div>
+
+        <div class="form-group">
+        {{ form.description.errors }}
+            <label for="{{ form.description.id_for_label }}">Descripción</label>
+            
+             <textarea class="form-control" name="{{ form.description.name }}" id="{{ form.description.id_description }}" required rows="3"></textarea>
+        </div>
+
+        <div class="form-group">
+        {{ form.ip.errors }}
+            <label for="{{ form.ip.id_for_label }}">Dirección ip</label>
+            
+            <input type="text" class="form-control" name="{{ form.ip.name }}" id="{{ form.ip.id_ip }}" required placeholder="Another input">
+        </div>
+
+        <div class="form-group">
+            <label for="{{ form.emlfile.id_for_label }}">Adjunto eml</label>
+            <input type="file" class="form-control" name="{{ form.emlfile.name }}" id="{{ form.emlfile.id }}" placeholder="Another input">
+        </div>
+
+
+        <hr  class="my-4">
+
+        <button class="btn btn-primary" type="submit">Reportar</button> 
+
+        </form>
+
+<hr  class="my-4">
+
+<center>
+    <a class="btn btn-primary btn-lg" href="/" role="button">Home</a>
+</center>
+
+
+{% if messages %}
+{% for message in messages %}
+<div class="alert alert-{{ message.tags }} alert-dismissible fade show custom-alert" role="alert">
+    <strong> {{ message }} </strong>
+</div>
+{% endfor %}
+{% endif %}
+
+{% endblock content %}
