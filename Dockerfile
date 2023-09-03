@@ -1,6 +1,6 @@
 FROM python:3.11-slim as builder
 
-RUN apt-get update && cd /tmp/ && mkdir -p /home/app && useradd --shell /bin/bash --home-dir /home/app app && chown -R app:app /home/app
+RUN apt-get update && apt install libmagic1 && cd /tmp/ && mkdir -p /home/app && useradd --shell /bin/bash --home-dir /home/app app && chown -R app:app /home/app
 
 ENV PROJECT_DIR /home/app
 
