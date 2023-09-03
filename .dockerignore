@@ -1,0 +1,6 @@
+auth-python
+db.sqlite3
+Dockerfile
+Makefile
+static/app
+*/migrations/*

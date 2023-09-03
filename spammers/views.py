@@ -1,49 +1,51 @@
-from django.shortcuts import redirect
 from django.shortcuts import render
-from django.shortcuts import get_object_or_404
+
+from django.shortcuts import redirect
+
+from django.db import transaction
+
 from django.views import generic
+
 from django.core.paginator import Paginator
 
-from logging import getLogger
-from django.http import JsonResponse
+from django.shortcuts import get_object_or_404
 
+from logging import getLogger
+
+#Validadores
+from django.core.exceptions import ValidationError
+
+from django.core.validators import validate_email
+
+from django.core.validators import validate_ipv46_address, RegexValidator
+
+##para trabajar con la fecha del reporte
+import time
+
+#import message platform
+from django.contrib import messages
+
+validate_hostname = RegexValidator(regex=r'[a-zA-Z0-9-_]*\.[a-zA-Z]{2,6}')
+                                    
 logger = getLogger(__name__)
 
-# Create your views here.
+from .models import SpamMessage, SpamIp
 
-from .tasks import mqservice
-from .models import SpamMessage
-from .mqservice import MQService
-from .models import SpamIp
+from .forms import ReporterForm
+
+# Create your views here.
 
 ## Para realizar busquedas
 from django.db.models import Q
 
-def running(request):
-    
-    contenido = {}    
+from authdj.settings import BASE_DIR
 
-    if request.method == 'GET':
-        try:
-            #se puede ver tmb REMOTE_HOST
-            if (request.META['REMOTE_ADDR']=="192.168.2.11"):
-                if MQService.getInstance().running == False:
-                    mqservice.delay()
-                    contenido={'SUCCESS':'MQ Running',"fail":None}
-            else:
-                contenido={'SUCCESS':None,"fail":"No esta autorizado a iniciar desde otra ip"}
-        except Exception as e:
-            logger.debug("Ocurrio un error al iniciar servicio")
-            contenido={'SUCCESS':None,"fail":"MQ don't run"}
-    
-        
-    return JsonResponse(contenido, status=200)
 
 class SpamMessageListView(generic.ListView):
     logger.info("Acceso a la vista de emails por medio de paginacion")
     model = SpamMessage
     paginate_by = 10
-    
+
 def view_spammers(request):
     logger.info("Acceso a la vista de emails")
     
@@ -65,7 +67,18 @@ def view_spammers(request):
             
     return render(request, 'spammers/list.html', {'emails': page_obj})
 
-def spammers_detail_view(request,**kwargs):
+
+
+def view_form(request):
+    logger.info("Acceso a la vista de formulario")
+    if request.method == 'GET':
+        formSpam = ReporterForm()
+        return render(request, 'spammers/form.html',{'form':formSpam})
+    
+    return render(request, '404')
+
+
+def view_spammer_detail(request,**kwargs):
     
     logger.info("Acceso a la vista de detail")
     
@@ -85,4 +98,68 @@ def spammers_detail_view(request,**kwargs):
         return render(request,'spammers/detail.html',context={'email':compuesto})
     
     return redirect("/")
-    
+
+
+@transaction.atomic
+def process_form(request):
+    ERROR_FORM = False
+    UPLOAD_FILE = True
+    logger.info("Acceso a reporte de mail por medio de form")
+    if request.method == 'POST':
+        form = ReporterForm(request.POST, request.FILES)
+        if (form.is_valid):
+            logger.info("formulario enviado ok {}".format(request.POST))
+            try:
+                validate_email(form['email'].data)
+            except ValidationError as e:
+                logger.debug("El mail no es valido")
+                ERROR_FORM = True
+                messages.error(request,"El mail no es valido")
+            try:
+                validate_hostname(form['domain'].data)
+            except ValidationError as e:
+                logger.debug("El domain no es valido")
+                ERROR_FORM = True
+                messages.error(request,"El domain no es valido")
+            
+            try:
+                validate_ipv46_address(form['ip'].data)
+            except ValidationError as e:
+                logger.debug("La ip no es valida")
+                ERROR_FORM = True
+                messages.error(request,"La ip no es valida")
+                
+            if form['emlfile'].data is None:
+                UPLOAD_FILE = False
+            
+            if not ERROR_FORM:
+                
+                fecha = time.strftime("%Y-%m-%d")
+
+                if UPLOAD_FILE:
+                    email_spam = SpamMessage(email=form['email'].data,domain=form['domain'].data,description=form['description'].data,
+                                         emlfile=request.FILES['emlfile'],time=fecha,message="")
+                else:
+                    email_spam = SpamMessage(email=form['email'].data,domain=form['domain'].data,description=form['description'].data
+                                             ,time=fecha,message="")
+                
+                email_spam.save()
+                logger.debug("email id: {}".format(email_spam.id))
+                ip_spam = SpamIp(email_id=email_spam.id,ip=(form['ip'].data))
+                ip_spam.save()
+                logger.debug("email id: {}".format(ip_spam.id))   
+                messages.success(request,"Se registro correctamente")
+                
+            logger.info("datos {}".format(form['email'].data))
+            return render(request, 'spammers/form.html',{'form':form})
+        
+        else:
+            formSpam = ReporterForm()
+            messages.error(request,"El formulario no es valido")
+            return render(request, 'spammers/form.html',{'form':formSpam})
+            
+        
+    return redirect("/")
+
+def view_file(request):
+    return BASE_DIR

@@ -1,8 +1,12 @@
-{% extends "base.html" %}
+{% extends "_base.html" %}
+
+{% load django_bootstrap5 %}
+
 {% block content %}
 
+{% if user.is_authenticated %}
 
-<div class="container-fluid">
+<div class="container">
 
   <h3>
   {{email.email}}
@@ -12,7 +16,6 @@
 
   <ul class="list-group">
         <li class="list-group-item">Pertenece al dominio: {{email.domain}}</li>
-        <li class="list-group-item">generado: {{email.created_at}}</li>
         <li class="list-group-item">creado: {{email.time}}</li>
         <li class="list-group-item">ip: {{email.ip}}</li>
         <li class="list-group-item">estado: {{email.state}}</li>
@@ -28,7 +31,6 @@
 
 </div>
 
-    
-
+{% endif %}
 
 {% endblock content %}

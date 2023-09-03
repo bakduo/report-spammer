@@ -1,5 +1,10 @@
-{% extends "base.html" %}
+{% extends '_base.html' %}
+
+{% load django_bootstrap5 %}
+
 {% block content %}
+
+<div class="container">
 
 
 <div class="table-responsive-sm table-responsive-md table-responsive-lg table-responsive-xl table-hover table-fixed text-nowrap">
@@ -23,7 +28,12 @@
         <th scope="row">{{forloop.counter}}</th>
         <td>{{email.email}}</td>
         <td>{{email.domain}}</td>
+        {% if user.is_authenticated %}
+
         <td><a href="{% url 'email_detail' email.id%}" alt="Access email detail">Detail</a></td>
+        {% else %}
+        <td><a href="#" alt="Access denied">Detail no disponible</a></td>
+        {% endif %}
         </tr>
         {% endfor %}
     </tbody>
@@ -50,6 +60,7 @@
 
 </div>
 
+</div>
 
 
 {% endblock content %}
