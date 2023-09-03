@@ -40,7 +40,11 @@ python manage.py createsuperuser --username user --email user@domain.tld
 
 Permitir ejecutar dev:
 
-mkdir log && mkdir config && mkdir eml
+mkdir log && mkdir config && mkdir eml && mkdir -p */migrations/
+
+Luego generar:
+
+touch */migrations/__init__.py
 
 Put your config app and:
 
