@@ -31,7 +31,8 @@ SECRET_KEY = CONFIG_APP['app']['secret']
 
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = CONFIG_APP['app']['debug']
+
+DEBUG = os.environ.get('DJANGO_DEBUG', 'False') == 'True'
 
 
 ALLOWED_HOSTS = [CONFIG_APP['app']['website'],'localhost','127.0.0.1']
