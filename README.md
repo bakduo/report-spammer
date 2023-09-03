@@ -1,14 +1,18 @@
 Spam report
 ===========
 
-This app permit report an email spammer and attach eml for MUA agent.
+Permite realizar reporte de mails como spam.
 
 ## summary
 
-- [x] support MySQL
-- [x] support PostgreSQL with minimal re-configuration
-- [x] support Docker build
-- [x] support API Rest only for list and list individual message with auth.
+- [x] soporte para MySQL
+- [x] soporte para PostgreSQL con minima re-configuration
+- [x] soporte para build image docker
+- [x] Agrega soporte para API Rest para listar y para acceso individuales por id solo con autenticación.
+- [x] Add sitemap.
+- [x] soporte para whitenoise.
+- [x] Soporte con https
+- [x] sitio => https://report-spam.oncosmos.com
   
 ```
 
@@ -30,7 +34,8 @@ Ejemplo de configuración config/app.json
             "init_command":"'SET innodb_strict_mode=1'",
             "charset":"utf8mb4"
         }
-        "debug":"False"
+        "debug":"False",
+        "uploadfolder":"/path-static"
     }
 }
 
@@ -70,7 +75,7 @@ Put your config app and:
 
 ./rundev.sh
 
-Permite ejecutar semi-prod:
+Permite ejecutar prod via proxy pass:
 
 ./run-gunicorn.sh
 
