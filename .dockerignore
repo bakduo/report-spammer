@@ -1,6 +1,12 @@
 auth-python
 db.sqlite3
-Dockerfile
+Dockerfile*
 Makefile
 static/app
-*/migrations/*
+*.yaml
+*.yml
+*.sh
+*.cnf
+eml
+log
+.git
