@@ -242,7 +242,11 @@ STATICFILES_DIRS = (str(BASE_DIR.joinpath('static')),)
 STATIC_ROOT = str(BASE_DIR.joinpath('static/app'))
 
 #Compatible con versiones < 4.2
-STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage" # Permite realizar compile static
+
+if DEBUG:
+    STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage" # Permite realizar compile static
+else:
+    STATICFILES_STORAGE = "django.contrib.staticfiles.storage.StaticFilesStorage"
 
 #https://whitenoise.readthedocs.io/en/stable/django.html
 
@@ -283,8 +287,8 @@ SILENCED_SYSTEM_CHECKS = [
   "django_mysql.W003",
 ]
 
-TINYMCE_JS_URL = os.path.join(STATIC_URL, APP_FIX+"tinymce/tinymce.min.js")
-TINYMCE_JS_ROOT = os.path.join(STATIC_URL, APP_FIX+"tinymce/")
+TINYMCE_JS_URL = os.path.join(STATIC_URL,"tinymce/tinymce.min.js")
+TINYMCE_JS_ROOT = os.path.join(STATIC_URL,"tinymce/")
 
 TINYMCE_DEFAULT_CONFIG = {
   'cleanup_on_startup': True,
