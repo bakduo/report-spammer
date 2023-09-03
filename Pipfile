@@ -1,25 +1,23 @@
 [[source]]
-url = "https://pypi.python.org/simple"
+url = "https://pypi.org/simple"
 verify_ssl = true
 name = "pypi"
 
 [packages]
-Django = "*"
-gunicorn = "*"
-python-dateutil = "*"
-pika = "*"
-aio-pika = "*"
-asgiref = "*"
-celery = "*"
-django-celery-results = "*"
-asyncio = "*"
-django-background-tasks = "*"
-django-simple-task = "*"
-paramiko = "*"
-django-tinymce = "*"
-psycopg2-binary = "*"
+django = "~=4.2.3"
+pip-search = "*"
+pytest = "*"
+psycopg2-binary = "==2.9.6"
+django-bootstrap5 = "==23.3"
+django-cors-headers = "*"
+django-mysql = "==4.11.0"
+pymysql = "*"
+djangorestframework = "==3.14.0"
+gunicorn = "==21.2.0"
+django-tinymce = "==3.6.1"
+whitenoise = "==6.5.0"
 
 [dev-packages]
 
 [requires]
-python_version = "3.8"
+python_version = "3.10"

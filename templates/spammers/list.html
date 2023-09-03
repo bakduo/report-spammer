@@ -30,7 +30,7 @@
         <td>{{email.domain}}</td>
         {% if user.is_authenticated %}
 
-        <td><a href="{% url 'email_detail' email.id%}" alt="Access email detail">Detail</a></td>
+        <td><a href="{% url 'email_detail' email.id%}" rel="nofollow" alt="Access email detail">Detail</a></td>
         {% else %}
         <td><a href="#" alt="Access denied">Detail no disponible</a></td>
         {% endif %}

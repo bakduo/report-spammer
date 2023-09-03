@@ -11,3 +11,8 @@ eml/
 *.yml
 *.yaml
 config/
+Dockerfile.base
+generate-admin-app.sh
+initdb.sh
+my.cnf
+
