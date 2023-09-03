@@ -1,6 +1,6 @@
 FROM python:3.11-slim as builder
 
-RUN apt-get update && cd /tmp/ && pip install -U pip && mkdir -p /home/app && useradd --shell /bin/bash --home-dir /home/app app && chown -R app:app /home/app
+RUN apt-get update && cd /tmp/ && mkdir -p /home/app && useradd --shell /bin/bash --home-dir /home/app app && chown -R app:app /home/app
 
 ENV PROJECT_DIR /home/app
 
@@ -10,7 +10,7 @@ USER app
 
 COPY --chown=app requirements.txt ${PROJECT_DIR}/
 
-RUN export PATH=$PATH:/home/app/.local/bin && pip install -r /home/app/requirements.txt --user && rm -rf /home/app/log
+RUN export PATH=$PATH:/home/app/.local/bin && pip install -U pip --user && pip install -r /home/app/requirements.txt --user
 
 FROM python:3.11-slim
 
