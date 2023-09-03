@@ -89,7 +89,9 @@ CORS_ORIGIN_WHITELIST = (
 
 #Caso de tener un front extra
 CSRF_TRUSTED_ORIGINS = [
-    "http://localhost:3000"
+    "http://localhost:3000",
+    "http://"+str(CONFIG_APP['app']['website']),
+    "https://"+str(CONFIG_APP['app']['website']),
 ]
 
 ROOT_URLCONF = 'authdj.urls'
