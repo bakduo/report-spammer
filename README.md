@@ -1,5 +1,5 @@
 Spam report
-===========0
+===========
 
 This app permit report an email spammer and attach eml for MUA agent.
 
