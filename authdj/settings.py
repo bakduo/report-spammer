@@ -32,8 +32,9 @@ SECRET_KEY = CONFIG_APP['app']['secret']
 
 # SECURITY WARNING: don't run with debug turned on in production!
 
-DEBUG = os.environ.get('DJANGO_DEBUG', 'False') == 'True'
+#DEBUG = os.environ.get('DJANGO_DEBUG', 'False') == 'True'
 
+DEBUG = True
 
 ALLOWED_HOSTS = [CONFIG_APP['app']['website'],'localhost','127.0.0.1']
 
@@ -231,6 +232,8 @@ STATIC_URL = '/static/'
 
 APP_FIX= 'app/'
 
+UPLOAD_FOLDER = CONFIG_APP['app']['uploadfolder']
+
 # Agrega soporte para static dirs
 
 STATICFILES_DIRS = (str(BASE_DIR.joinpath('static')),)
@@ -239,7 +242,21 @@ STATICFILES_DIRS = (str(BASE_DIR.joinpath('static')),)
 
 STATIC_ROOT = str(BASE_DIR.joinpath('static/app'))
 
+#Compatible con versiones < 4.2
 STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage" # Permite realizar compile static
+
+#https://whitenoise.readthedocs.io/en/stable/django.html
+
+#https://whitenoise.readthedocs.io/en/stable/django.html#WHITENOISE_STATIC_PREFIX Para ter en cuenta 
+
+#WHITENOISE_STATIC_PREFIX = str(STATIC_ROOT)
+
+#Version 4.2 no funciona
+#STORAGES = {    
+#    "staticfiles": {
+#        "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
+#    },
+#}
 
 # fin para production
 

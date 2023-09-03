@@ -19,6 +19,10 @@ from django.core.validators import validate_email
 
 from django.core.validators import validate_ipv46_address, RegexValidator
 
+from django.http import Http404
+
+from django.utils.translation import gettext as _
+
 ##para trabajar con la fecha del reporte
 import time
 
@@ -161,5 +165,8 @@ def process_form(request):
         
     return redirect("/")
 
-def view_file(request):
-    return BASE_DIR
+
+def download_file(path):
+    logger.info("nada User autenticado")
+    logger.info(path)
+    raise Http404(_("Testing control no funciona."))
