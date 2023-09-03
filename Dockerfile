@@ -1,4 +1,4 @@
-FROM python:3.10-slim as builder
+FROM python:3.11-slim as builder
 
 RUN apt-get update && apt install -y libmagic1 && cd /tmp/ && mkdir -p /home/app && useradd --shell /bin/bash --home-dir /home/app app && chown -R app:app /home/app
 
@@ -12,7 +12,7 @@ COPY --chown=app requirements.txt ${PROJECT_DIR}/
 
 RUN export PATH=$PATH:/home/app/.local/bin && pip install -U pip --user && pip install -r /home/app/requirements.txt --user
 
-FROM python:3.10-slim
+FROM python:3.11-slim
 
 LABEL org.opencontainers.image.authors="bakduo"
 
