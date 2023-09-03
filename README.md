@@ -12,7 +12,7 @@ This app permit report an email spammer and attach eml for MUA agent.
   
 ```
 
-Example configuration config/app.json
+Ejemplo de configuración config/app.json
 
 {
     "app":{
@@ -30,8 +30,28 @@ Example configuration config/app.json
             "init_command":"'SET innodb_strict_mode=1'",
             "charset":"utf8mb4"
         }
+        "debug":"False"
     }
 }
+
+Estructura statica:
+
+static/
+├── app
+│   ├── admin
+│   ├── css
+│   ├── django_tinymce
+│   ├── images
+│   ├── js
+│   ├── rest_framework
+│   ├── staticfiles.json
+│   └── tinymce
+├── css
+│   └── base.css
+├── images
+│   └── logo.png
+└── js
+    └── base.js
 
 
 Generate user:
