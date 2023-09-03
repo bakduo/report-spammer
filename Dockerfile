@@ -1,6 +1,6 @@
 FROM python:3.10-slim as builder
 
-RUN apt-get update && apt install -y libmagic1 python3-magic && cd /tmp/ && mkdir -p /home/app && useradd --shell /bin/bash --home-dir /home/app app && chown -R app:app /home/app
+RUN apt-get update && apt install -y libmagic1 && cd /tmp/ && mkdir -p /home/app && useradd --shell /bin/bash --home-dir /home/app app && chown -R app:app /home/app
 
 ENV PROJECT_DIR /home/app
 
@@ -24,7 +24,7 @@ LABEL org.opencontainers.image.ref.name="spamapp"
 
 LABEL description="Spam report for blacklist|grylist|reporting"
 
-RUN mkdir -p /home/app && useradd --shell /bin/bash --home-dir /home/app app && chown -R app:app /home/app
+RUN apt-get update && apt install -y libmagic1 && mkdir -p /home/app && useradd --shell /bin/bash --home-dir /home/app app && chown -R app:app /home/app
 
 ENV PROJECT_DIR /home/app
 
