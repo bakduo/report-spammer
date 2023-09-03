@@ -16,6 +16,7 @@ djangorestframework = "==3.14.0"
 gunicorn = "==21.2.0"
 django-tinymce = "==3.6.1"
 whitenoise = "==6.5.0"
+python-magic = "==0.4.27"
 
 [dev-packages]
 

@@ -23,7 +23,7 @@ tinyMCE.init({
         <div class="container-fluid">
 
             <a class="navbar-brand" href="#">
-              <img src="{% static 'images/logo.png' %}" alt="" width="30" height="24">
+              <img src="{% static 'images/logo.png' %}" alt="logo web page" width="30" height="24">
             </a>
               <a class="navbar-brand" href="/">Spammers</a>
               <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -56,7 +56,7 @@ tinyMCE.init({
                         {% if user.is_authenticated %}
                         <a class="nav-link" href="{% url 'logout' %}" id="logout">Log out</a>
                         {% else %}
-                        <a class="nav-link" href="/auth-legacy/signup/" id="signup">Sign Up</a>
+                        <a class="nav-link" href="/auth-legacy/signup/" rel="nofollow" id="signup">Sign Up</a>
                         {% endif %}
 
                       </li>

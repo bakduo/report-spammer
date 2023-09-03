@@ -33,9 +33,15 @@ validate_hostname = RegexValidator(regex=r'[a-zA-Z0-9-_]*\.[a-zA-Z]{2,6}')
                                     
 logger = getLogger(__name__)
 
+ALLOWED_MIMETYPES = ("text/plain","application/pdf")
+
 from .models import SpamMessage, SpamIp
 
 from .forms import ReporterForm
+
+#Control de mime type
+#https://pypi.org/project/python-magic/
+import magic
 
 # Create your views here.
 
@@ -141,20 +147,26 @@ def process_form(request):
                 fecha = time.strftime("%Y-%m-%d")
 
                 if UPLOAD_FILE:
-                    email_spam = SpamMessage(email=form['email'].data,domain=form['domain'].data,description=form['description'].data,
-                                         emlfile=request.FILES['emlfile'],time=fecha,message="")
+                    mime_type = magic.from_buffer(request.FILES['emlfile'].read(), mime=True)
+                    if mime_type in ALLOWED_MIMETYPES:
+                        email_spam = SpamMessage(email=form['email'].data,domain=form['domain'].data,description=form['description'].data,
+                                                 emlfile=request.FILES['emlfile'],time=fecha,message="")
+                    else:
+                        logger.debug("Contenido no valido para subir")
+                        ERROR_FORM = True
+                        messages.error(request,"El achivo no es valido para subir")
                 else:
                     email_spam = SpamMessage(email=form['email'].data,domain=form['domain'].data,description=form['description'].data
                                              ,time=fecha,message="")
+                if not ERROR_FORM:
+                    email_spam.save()
+                    logger.debug("email id: {}".format(email_spam.id))
+                    ip_spam = SpamIp(email_id=email_spam.id,ip=(form['ip'].data))
+                    ip_spam.save()
+                    logger.debug("email id: {}".format(ip_spam.id))
+                    messages.success(request,"Se registro correctamente")
                 
-                email_spam.save()
-                logger.debug("email id: {}".format(email_spam.id))
-                ip_spam = SpamIp(email_id=email_spam.id,ip=(form['ip'].data))
-                ip_spam.save()
-                logger.debug("email id: {}".format(ip_spam.id))   
-                messages.success(request,"Se registro correctamente")
-                
-            logger.info("datos {}".format(form['email'].data))
+            #logger.info("datos {}".format(form['email'].data))
             return render(request, 'spammers/form.html',{'form':form})
         
         else:

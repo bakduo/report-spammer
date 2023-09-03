@@ -16,6 +16,12 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from django.contrib.sitemaps.views import sitemap
+from .sitemaps import SpammersViewSitemap
+
+sitemaps = {
+    'static': SpammersViewSitemap,
+}
 
 urlpatterns = [
     #management
@@ -29,4 +35,6 @@ urlpatterns = [
     path("",include('spammers.urls')),
     #util
     path('tinymce/', include('tinymce.urls')),
+    #sitemaps
+    path('sitemap.xml', sitemap, {'sitemaps': sitemaps}, name='django.contrib.sitemaps.views.sitemap')
 ]

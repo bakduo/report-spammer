@@ -57,6 +57,7 @@ INSTALLED_APPS = [
     'userauth',
     'apis.apps.ApisConfig',
     'spammers',
+    'django.contrib.sitemaps',
 ]
 
 #https://www.django-rest-framework.org/api-guide/settings/

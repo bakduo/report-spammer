@@ -63,25 +63,19 @@
 
         <hr  class="my-2">
 
+        {% if messages %}
+        {% for message in messages %}
+        <div class="alert alert-{{ message.tags }} alert-dismissible fade show custom-alert" role="alert">
+            <strong> {{ message }} </strong>
+        </div>
+        {% endfor %}
+        {% endif %}
+        {% endif %}
+
         </form>
 
         <center>
             <a class="btn btn-primary" href="/" role="button">Home</a>
         </center>
-        
-
-
-
-
-
-{% if messages %}
-{% for message in messages %}
-<div class="alert alert-{{ message.tags }} alert-dismissible fade show custom-alert" role="alert">
-    <strong> {{ message }} </strong>
-</div>
-{% endfor %}
-{% endif %}
-
-{% endif %}
 
 {% endblock content %}
