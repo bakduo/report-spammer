@@ -2,7 +2,6 @@ db.sqlite3
 compose.yaml
 */__pycache__/
 */migrations/__pycache__/
-*/settings.py
 static/app
 */migrations/*
 log/

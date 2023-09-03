@@ -1,6 +1,6 @@
 FROM python:3.11-slim as builder
 
-RUN apt-get update && cd /tmp/ && pip install -U pip && mkdir -p /home/app /home/app/staticfiles && useradd --shell /bin/bash --home-dir /home/app app && chown -R app:app /home/app
+RUN apt-get update && cd /tmp/ && pip install -U pip && mkdir -p /home/app && useradd --shell /bin/bash --home-dir /home/app app && chown -R app:app /home/app
 
 ENV PROJECT_DIR /home/app
 
@@ -8,9 +8,9 @@ WORKDIR ${PROJECT_DIR}
 
 USER app
 
-COPY requirements.txt ${PROJECT_DIR}/
+COPY --chown=app requirements.txt ${PROJECT_DIR}/
 
-RUN export PATH=$PATH:/home/app/.local/bin && pip install -r /home/app/requirements.txt --user
+RUN export PATH=$PATH:/home/app/.local/bin && pip install -r /home/app/requirements.txt --user && rm -rf /home/app/log
 
 FROM python:3.11-slim
 
@@ -24,7 +24,7 @@ LABEL org.opencontainers.image.ref.name="spamapp"
 
 LABEL description="Spam report for blacklist|grylist|reporting"
 
-RUN mkdir -p /home/app /home/app/static && useradd --shell /bin/bash --home-dir /home/app app && chown -R app:app /home/app
+RUN mkdir -p /home/app && useradd --shell /bin/bash --home-dir /home/app app && chown -R app:app /home/app
 
 ENV PROJECT_DIR /home/app
 
@@ -32,9 +32,9 @@ WORKDIR ${PROJECT_DIR}
 
 USER app
 
-COPY --from=builder /home/app/.local /home/app/.local
+COPY --chown=app --from=builder /home/app/.local /home/app/.local
 
-COPY . /home/app/
+COPY --chown=app . /home/app/
 
 ENV PORT=8000
 
